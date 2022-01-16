@@ -1,2 +1,2 @@
 export * from "./auth";
-export { default as Menu } from "./Menu/Menu";
+export { default as Menu } from "./NavMenu/NavMenu";

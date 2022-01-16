@@ -2,19 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+	font-family: "Sora";
+	src: url("../public/assets/fonts/Sora-VariableFont_wght.ttf") format("truetype");
+	font-weight: 100 900;
+}
+
+@font-face {
+	font-family: "Lora";
+	src: url("../public/assets/fonts/Lora-VariableFont_wght.ttf");
+	font-weight: 100 900;
+}
+
+@font-face {
+	font-family: "Oxygen";
+	src: url("../public/assets/fonts/Oxygen-Regular.ttf");
+	font-weight: 100 900;
+}
+
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	padding: 0;
+	margin: 0;
+	font-family: Lora, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+		Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+	color: inherit;
+	text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
