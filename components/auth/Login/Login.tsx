@@ -6,7 +6,7 @@ const Login: FC = () => {
 	const [password, setPassword] = useState<string>("");
 
 	return (
-		<div className="bg-modal-bg backdrop-blur-sm w-11/12 rounded-lg py-20 flex flex-col items-center">
+		<div className="bg-modal-bg backdrop-blur-sm w-11/12 rounded-lg py-20 px-4 flex flex-col items-center">
 			<h2 className="text-white text-center">
 				Authorized <br /> Personel Only
 			</h2>

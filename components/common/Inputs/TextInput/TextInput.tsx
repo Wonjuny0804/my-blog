@@ -11,7 +11,7 @@ const TextInput: FC<Props> = ({ inputValue, setInputValue, label }) => {
 		setInputValue(e.target.value);
 	}, []);
 	return (
-		<div className="border-b flex gap-2">
+		<div className="border-b flex gap-2 w-full">
 			<label className={`text-white`} htmlFor={label || "textInput"}>
 				{label || "Default"}
 			</label>
