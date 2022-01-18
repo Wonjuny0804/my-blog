@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import GlowParticles from "./glowParticles";
+import GlowParticles from "./GlowParticles";
 
 const COLORS = [
 	{ r: 45, g: 75, b: 227 },
@@ -21,7 +21,7 @@ const ExperimentPage = () => {
 		const pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
 
 		const totalParticles = 1;
-		const particles = [];
+		const particles: any[] = [];
 		const maxRadius = 90;
 		const minRadius = 40;
 
@@ -58,7 +58,13 @@ const ExperimentPage = () => {
 			$context?.scale(pixelRatio, pixelRatio);
 		};
 
-		const animate = () => {};
+		const animate = () => {
+			$context?.clearRect(0, 0, stageWidth, stageHeight);
+
+			for (let i = 0; i < totalParticles; i++) {
+				const item = particles[i];
+			}
+		};
 	}, []);
 
 	return <div></div>;
