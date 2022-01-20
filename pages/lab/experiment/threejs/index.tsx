@@ -25,6 +25,19 @@ const Box = (props: JSX.IntrinsicElements["mesh"]) => {
 	);
 };
 
+const Sphere = (props: JSX.IntrinsicElements["mesh"]) => {
+	const mesh = useRef<THREE.Mesh>(null);
+
+	// useFrame((state, delta) => (mesh.current?.rotation.y += 0.01));
+
+	return (
+		<mesh {...props} ref={mesh} scale={2}>
+			<sphereGeometry args={[7, 12, 8]} />
+			<meshStandardMaterial color={"blue"} />
+		</mesh>
+	);
+};
+
 const PracticeOne = () => {
 	return (
 		<main>
@@ -35,6 +48,7 @@ const PracticeOne = () => {
 				<pointLight position={[10, 10, 10]} />
 				<Box position={[-1.2, 0, 0]} />
 				<Box position={[1.2, 0, 0]} />
+				<Sphere position={[1.5, 1, 1]} />
 			</Canvas>
 		</main>
 	);
