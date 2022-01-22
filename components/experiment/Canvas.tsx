@@ -1,15 +1,11 @@
-import React, { useRef, useEffect } from "react";
+import React, { FC, useRef, useEffect } from "react";
 
-const Canvas = (props: any) => {
+interface Props {
+	draw: any;
+}
+
+const Canvas: FC<Props> = ({ draw, ...rest }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
-
-	const draw = (context: CanvasRenderingContext2D, frameCount: number) => {
-		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-		context.fillStyle = "#000000";
-		context.beginPath();
-		context.arc(50, 100, 20 * Math.sin(frameCount * 0.05) ** 2, 0, 2 * Math.PI);
-		context.fill();
-	};
 
 	useEffect(() => {
 		if (canvasRef.current) {
@@ -33,7 +29,7 @@ const Canvas = (props: any) => {
 		}
 	}, [draw]);
 
-	return <canvas ref={canvasRef} {...props} />;
+	return <canvas ref={canvasRef} {...rest} />;
 };
 
 export default Canvas;
