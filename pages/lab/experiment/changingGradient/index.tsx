@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import GlowParticles from "./GlowParticles";
+import { GlowingParticle } from "./glowingParticle";
 
 const COLORS = [
 	{ r: 45, g: 75, b: 227 },
@@ -9,68 +10,77 @@ const COLORS = [
 	{ r: 54, g: 233, b: 84 },
 ];
 
-const ChangingGradientPage = () => {
-	const [stageWidth, setStageWidth] = useState<number>(0);
-	const [stageHeight, setStageHeight] = useState<number>(0);
+interface Props {
+	animate: any;
+}
+
+const ChangingGradientPage: React.FC<Props> = () => {
+	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
-		const $canvas = document.createElement("canvas");
-		document.body.appendChild($canvas);
+		if (canvasRef.current) {
+			const $canvasCtx = canvasRef.current.getContext("2d");
+			let pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
 
-		const $context = $canvas.getContext("2d");
-		const pixelRaitio = window.devicePixelRatio > 1 ? 2 : 1;
+			let totalParticles = 1;
+			const particles: GlowingParticle[] = [];
+			let maxRadius = 90;
+			let minRadius = 40;
+			let stageWidth: number;
+			let stageHeight: number;
 
-		const totalParticles = 1;
-		const particles: any[] = [];
-		const maxRadius = 90;
-		const minRadius = 40;
+			const createParticles = () => {
+				let curColor = 0;
 
-		// window resize code
+				for (let i = 0; i < totalParticles; i++) {
+					const item = new GlowingParticle(
+						Math.random() * stageWidth,
+						Math.random() * stageHeight,
+						Math.random() * (maxRadius - minRadius) + minRadius,
+						COLORS[curColor],
+					);
 
-		// window.requestAnimationFrame($canvas.animate.bind($canvas));
+					if (++curColor >= COLORS.length) {
+						curColor = 0;
+					}
 
-		const createParticles = () => {
-			let curColor = 0;
+					particles[i] = item;
+				}
+			};
 
-			for (let i = 0; i < totalParticles; i++) {
-				const item = (
-					<GlowParticles
-						x={Math.random() * stageWidth}
-						y={Math.random() * stageHeight}
-						radius={Math.random() * (maxRadius - minRadius) + minRadius}
-						rgb={COLORS[curColor]}
-						context={$context}
-						stageHeight={stageHeight}
-						stageWidth={stageWidth}
-					/>
-				);
+			const animate = () => {
+				if (!$canvasCtx) return;
 
-				if (++curColor >= COLORS.length) curColor = 0;
+				window.requestAnimationFrame(animate);
 
-				particles.push(item);
-			}
-		};
+				$canvasCtx.clearRect(0, 0, stageWidth, stageHeight);
 
-		const resize = () => {
-			setStageWidth(document.body.clientWidth);
-			setStageHeight(document.body.clientHeight);
+				for (let i = 0; i < totalParticles; i++) {
+					const item = particles[i];
+					item?.animate($canvasCtx, stageWidth, stageHeight);
+				}
+			};
 
-			$canvas.width = stageWidth * pixelRatio;
-			$canvas.height = stageHeight * pixelRatio;
+			const resize = () => {
+				if (!canvasRef?.current) return;
 
-			$context?.scale(pixelRatio, pixelRatio);
-		};
+				stageWidth = document.body.clientWidth;
+				stageHeight = document.body.clientHeight;
 
-		const animate = () => {
-			$context?.clearRect(0, 0, stageWidth, stageHeight);
+				canvasRef.current.width = stageWidth * pixelRatio;
+				canvasRef.current.height = stageHeight * pixelRatio;
 
-			for (let i = 0; i < totalParticles; i++) {
-				const item = particles[i];
-			}
-		};
+				$canvasCtx?.scale(pixelRatio, pixelRatio);
+				createParticles();
+			};
+
+			window.addEventListener("resize", resize, false);
+
+			window.requestAnimationFrame(animate);
+		}
 	}, []);
 
-	return <div></div>;
+	return <canvas ref={canvasRef} />;
 };
 
 export default ChangingGradientPage;
