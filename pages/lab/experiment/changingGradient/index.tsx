@@ -1,86 +1,31 @@
-import React, { useEffect, useState, useRef } from "react";
-import GlowParticles from "./GlowParticles";
-import { GlowingParticle } from "./glowingParticle";
+import React from "react";
+import ChangingGradient from "../../../../components/experiment/ChangingGradient";
 
-const COLORS = [
-	{ r: 45, g: 75, b: 227 },
-	{ r: 250, g: 255, b: 89 },
-	{ r: 255, g: 104, b: 248 },
-	{ r: 44, g: 209, b: 252 },
-	{ r: 54, g: 233, b: 84 },
-];
+const ChangingGradientPage: React.FC = () => {
+	const animate = (
+		ctx: CanvasRenderingContext2D | null,
+		stageWidth: number,
+		stageHeight: number,
+		totalParticles: number,
+		particles: Array<any>,
+	) => {
+		if (!ctx) return;
 
-interface Props {
-	animate: any;
-}
+		// window.requestAnimationFrame(animate);
 
-const ChangingGradientPage: React.FC<Props> = () => {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
+		ctx.clearRect(0, 0, stageWidth, stageHeight);
 
-	useEffect(() => {
-		if (canvasRef.current) {
-			const $canvasCtx = canvasRef.current.getContext("2d");
-			let pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
-
-			let totalParticles = 1;
-			const particles: GlowingParticle[] = [];
-			let maxRadius = 90;
-			let minRadius = 40;
-			let stageWidth: number;
-			let stageHeight: number;
-
-			const createParticles = () => {
-				let curColor = 0;
-
-				for (let i = 0; i < totalParticles; i++) {
-					const item = new GlowingParticle(
-						Math.random() * stageWidth,
-						Math.random() * stageHeight,
-						Math.random() * (maxRadius - minRadius) + minRadius,
-						COLORS[curColor],
-					);
-
-					if (++curColor >= COLORS.length) {
-						curColor = 0;
-					}
-
-					particles[i] = item;
-				}
-			};
-
-			const animate = () => {
-				if (!$canvasCtx) return;
-
-				window.requestAnimationFrame(animate);
-
-				$canvasCtx.clearRect(0, 0, stageWidth, stageHeight);
-
-				for (let i = 0; i < totalParticles; i++) {
-					const item = particles[i];
-					item?.animate($canvasCtx, stageWidth, stageHeight);
-				}
-			};
-
-			const resize = () => {
-				if (!canvasRef?.current) return;
-
-				stageWidth = document.body.clientWidth;
-				stageHeight = document.body.clientHeight;
-
-				canvasRef.current.width = stageWidth * pixelRatio;
-				canvasRef.current.height = stageHeight * pixelRatio;
-
-				$canvasCtx?.scale(pixelRatio, pixelRatio);
-				createParticles();
-			};
-
-			window.addEventListener("resize", resize, false);
-
-			window.requestAnimationFrame(animate);
+		for (let i = 0; i < totalParticles; i++) {
+			const item = particles[i];
+			item?.animate(ctx, stageWidth, stageHeight);
 		}
-	}, []);
+	};
 
-	return <canvas ref={canvasRef} />;
+	return (
+		<div>
+			<ChangingGradient animate={animate} />
+		</div>
+	);
 };
 
 export default ChangingGradientPage;

@@ -17,8 +17,6 @@ const ExperimentPage = () => {
 					</Link>
 				</li>
 			</ul>
-
-			<Canvas />
 		</div>
 	);
 };
